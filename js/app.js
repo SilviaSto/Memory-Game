@@ -68,21 +68,10 @@ function openCards(e) {
       listOfOpen = [];
     } else if ((listOfOpen[1].className === 'show') || (listOfOpen[0].innerHTML === listOfOpen[1].innerHTML)) {
       matchedCards();
-      listOfOpen = [];
+      listOfOpen = []; //empty array
     }
   }
 }
-
-/*
-
-    if  {
-
-    }
-    if (listOfOpen[0].innerHTML === listOfOpen[1].innerHTML) {
-      matchedCards();
-
-
-  }*/
 
 
 
