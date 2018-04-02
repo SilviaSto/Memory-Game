@@ -22,6 +22,30 @@ function newDeck() {
   }
 }
 
+/*** Play ***/
+function Play() {
+  for (card of cardList) {
+    card.addEventListener('click', openCards);
+  }
+}
+
+
+let listOfOpen = []; //temporary collector of open cards
+
+function openCards(e) {
+  e.target.classList.add('open', 'show');
+  listOfOpen.push(e.target);
+  if (listOfOpen.length % 2 === 0) { //starts counting of clicked pairs of cards
+    countMoves();
+  }
+  if (listOfOpen.length === 2) {
+    compare();
+  }
+  if (matchCollector.length === 8) {
+    console.log('winner');
+  }
+}
+
 
 /*** Shuffle function from http://stackoverflow.com/a/2450976 ***/
 function shuffle(array) {
@@ -39,7 +63,7 @@ function shuffle(array) {
 }
 
 
-/*** Clicks counter ***/
+/*** Moves counter ***/
 const moves = document.querySelector('.moves');
 let counter = 0;
 
@@ -53,30 +77,9 @@ function countReset() {
   counter = 0;
 }
 
-/*** An empty array for storing open cards ***/
-let listOfOpen = [];
 
-function openCards(e) {
-  e.target.classList.add('open', 'show');
-  listOfOpen.push(e.target);
-  if (listOfOpen.length % 2 === 0) { //starts counting of clicked pairs of cards
-    countMoves();
-  }
-  if (listOfOpen.length === 2) {
-    if ((listOfOpen[1].className === 'show') || (listOfOpen[0].innerHTML !== listOfOpen[1].innerHTML)) {
-      unmatchedCards();
-      listOfOpen = [];
-    } else if ((listOfOpen[1].className === 'show') || (listOfOpen[0].innerHTML === listOfOpen[1].innerHTML)) {
-      matchedCards();
-      listOfOpen = []; //empty array
-    }
-  }
-}
-
-
-
-/*** Matching cards ***/
-let matchCollector = []; //collect matching cards, which are needed for the end of the game
+/*** Compare pairs of cards ***/
+let matchCollector = []; //collect matching pairs of cards, which are needed for the end of the game
 let match = deck.querySelectorAll('.match');
 
 function matchedCards() {
@@ -91,6 +94,16 @@ function unmatchedCards() {
 }
 
 
+function compare() {
+  if ((listOfOpen[1].className === 'show') || (listOfOpen[0].innerHTML !== listOfOpen[1].innerHTML)) {
+    unmatchedCards();
+    listOfOpen = []; //no match -> empty array
+  } else if ((listOfOpen[1].className === 'show') || (listOfOpen[0].innerHTML === listOfOpen[1].innerHTML)) {
+    matchedCards();
+    listOfOpen = []; //match ->empty array
+    matchCollector.push(this);
+  }
+}
 
 /*** Stars ***/
 let star = document.querySelectorAll('.fa-star');
@@ -99,13 +112,6 @@ let starCounter = [...star];
 /*** Restart ***/
 const restart = document.querySelector('.restart');
 restart.addEventListener('click', newDeck);
-
-function Play() {
-  for (card of cardList) {
-    card.addEventListener('click', openCards);
-  }
-}
-
 
 window.onload = newDeck();
 Play()
