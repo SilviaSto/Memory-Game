@@ -17,6 +17,7 @@ function newDeck() {
     cardList.forEach(function() {
       deck.appendChild(card);
     });
+    starRateReset();
     countReset();
     card.classList.remove('open', 'show', 'match');
   }
@@ -28,7 +29,6 @@ function Play() {
     card.addEventListener('click', openCards);
   }
 }
-
 
 let listOfOpen = []; //temporary collector of open cards
 
@@ -44,6 +44,7 @@ function openCards(e) {
   if (matchCollector.length === 8) {
     console.log('winner');
   }
+  starRate();
 }
 
 
@@ -79,7 +80,7 @@ function countReset() {
 
 
 /*** Compare pairs of cards ***/
-let matchCollector = []; //collect matching pairs of cards, which are needed for the end of the game
+let matchCollector = []; //collect matching pairs of cards, needed at the end of the game
 let match = deck.querySelectorAll('.match');
 
 function matchedCards() {
@@ -101,13 +102,31 @@ function compare() {
   } else if ((listOfOpen[1].className === 'show') || (listOfOpen[0].innerHTML === listOfOpen[1].innerHTML)) {
     matchedCards();
     listOfOpen = []; //match ->empty array
-    matchCollector.push(this);
+    matchCollector.push(this); //collect matched pairs
   }
 }
 
 /*** Stars ***/
-let star = document.querySelectorAll('.fa-star');
-let starCounter = [...star];
+let stars = document.querySelectorAll('.stars li');
+let starCounter = [...stars];
+
+function starRate() {
+  if (counter === 12) {
+    starCounter[0].classList.add('hide');
+  } else if (counter === 24) {
+    starCounter[1].classList.add('hide');
+  } else if (counter >= 40) {
+    starCounter[2].classList.add('hide');
+  }
+}
+
+function starRateReset() {
+  for (stars of starCounter) {
+    stars.classList.remove('hide');
+  }
+}
+
+
 
 /*** Restart ***/
 const restart = document.querySelector('.restart');
@@ -115,9 +134,6 @@ restart.addEventListener('click', newDeck);
 
 window.onload = newDeck();
 Play()
-
-
-
 
 
 

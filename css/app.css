@@ -71,6 +71,7 @@ h1 {
 
 .deck .card.show {
   font-size: 33px;
+  transition: 1s;
 }
 
 .deck .card.match {
@@ -99,6 +100,12 @@ h1 {
 .score-panel .stars li {
   list-style: none;
   display: inline-block;
+}
+
+/*--add class hide for hiding stars--*/
+
+.hide i {
+  display: none;
 }
 
 .score-panel .restart {
