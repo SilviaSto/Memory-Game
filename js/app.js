@@ -59,21 +59,33 @@ let listOfOpen = [];
 function openCards(e) {
   e.target.classList.add('open', 'show');
   listOfOpen.push(e.target);
-  if (listOfOpen.length === 2) {
-    if (listOfOpen[0].innerHTML !== listOfOpen[1].innerHTML) {
-      unmatchedCards();
-      /*cardList.push(this);????*/
-    }
-    if (listOfOpen[0].innerHTML === listOfOpen[1].innerHTML) {
-      matchedCards();
-      /*matchCollector.push(this);????*/
-    }
-  }
-
   if (listOfOpen.length % 2 === 0) { //starts counting of clicked pairs of cards
     countMoves();
   }
+  if (listOfOpen.length === 2) {
+    if ((listOfOpen[1].className === 'show') || (listOfOpen[0].innerHTML !== listOfOpen[1].innerHTML)) {
+      unmatchedCards();
+      listOfOpen = [];
+    } else if ((listOfOpen[1].className === 'show') || (listOfOpen[0].innerHTML === listOfOpen[1].innerHTML)) {
+      matchedCards();
+      listOfOpen = [];
+    }
+  }
 }
+
+/*
+
+    if  {
+
+    }
+    if (listOfOpen[0].innerHTML === listOfOpen[1].innerHTML) {
+      matchedCards();
+
+
+  }*/
+
+
+
 /*** Matching cards ***/
 let matchCollector = []; //collect matching cards, which are needed for the end of the game
 let match = deck.querySelectorAll('.match');
@@ -104,6 +116,7 @@ function Play() {
     card.addEventListener('click', openCards);
   }
 }
+
 
 window.onload = newDeck();
 Play()
