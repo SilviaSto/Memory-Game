@@ -29,6 +29,7 @@ body {
 h1 {
   font-family: 'Open Sans', sans-serif;
   font-weight: 300;
+  color: purple;
 }
 
 /*
@@ -71,7 +72,7 @@ h1 {
 
 .deck .card.show {
   font-size: 33px;
-  transition: 1s;
+  transition: 0.1s;
 }
 
 .deck .card.match {
@@ -100,6 +101,8 @@ h1 {
 .score-panel .stars li {
   list-style: none;
   display: inline-block;
+  color: purple;
+  font-size: 25px;
 }
 
 /*--add class hide for hiding stars--*/
