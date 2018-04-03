@@ -42,7 +42,9 @@ function openCards(e) {
     compare();
   }
   if (matchCollector.length === 8) {
-    console.log('winner');
+    setTimeout(function() {
+      console.log('winner');
+    }, 800);
   }
   starRate();
 }
@@ -91,14 +93,16 @@ function matchedCards() {
 
 function unmatchedCards() {
   listOfOpen[0].classList.remove('open', 'show');
-  listOfOpen[1].classList.remove('open', 'show');
+  listOfOpen[1].classList.remove('open', 'show')
 }
 
 
 function compare() {
   if ((listOfOpen[1].className === 'show') || (listOfOpen[0].innerHTML !== listOfOpen[1].innerHTML)) {
-    unmatchedCards();
-    listOfOpen = []; //no match -> empty array
+    setTimeout(function() {
+      unmatchedCards();
+      listOfOpen = []
+    }, 300); //no match -> empty array
   } else if ((listOfOpen[1].className === 'show') || (listOfOpen[0].innerHTML === listOfOpen[1].innerHTML)) {
     matchedCards();
     listOfOpen = []; //match ->empty array
