@@ -2,11 +2,14 @@ html {
   box-sizing: border-box;
 }
 
-*, *::before, *::after {
-  box-sizing: inherit;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   width: 100%;
   height: 100%;
   margin: 0;
@@ -19,8 +22,10 @@ body {
   font-family: 'Indie Flower', cursive;
 }
 
-header, section, div {
-  max-width: 600px;
+header,
+section,
+div {
+  max-width: 800px;
   margin: 0 auto;
 }
 
@@ -86,6 +91,8 @@ h1 {
   cursor: default;
   background: #aa7ecd;
   font-size: 33px;
+  pointer-events: none;
+  /*remove pointer and disable opening matched cards*/
 }
 
 /*
@@ -94,28 +101,29 @@ h1 {
 
 .score-panel {
   text-align: left;
-  width: 345px;
+  width: 70%;
   margin-bottom: 10px;
   font-size: 3vw;
-  color: purple;
+  color: coral;
+  float: left;
 }
 
-.score-panel .stars {
+.stars {
+  list-style: none;
+  display: inline-block;
   margin: 0;
   padding: 0;
-  display: inline-block;
   margin: 0 5px 0 0;
 }
 
-.score-panel .stars li {
-  list-style: none;
+.stars li {
   display: inline-block;
   color: gold;
   font-size: 3.3vw;
-  text-shadow: 0.1vw 0.5vw purple;
+  text-shadow: 0.1vw 0.5vw coral;
 }
 
-/*--add class hide for hiding stars--*/
+/*--hiding stars on moves--*/
 
 .hide i {
   display: none;
@@ -124,5 +132,73 @@ h1 {
 .score-panel .restart {
   float: right;
   cursor: pointer;
+  color: coral;
+}
+
+/*-- add modal box --*/
+
+#modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  top: 5%;
+  left: 20%;
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+  background-color: transparent;
+}
+
+.content {
+  display: block;
+  background: lightgrey url('../img/geometry2.png');
+  margin: 5% auto;
+  padding: 0.4em;
+  width: 70%;
   color: purple;
+  border: 3px dotted coral;
+  text-align: center;
+  border-radius: 5%;
+}
+
+.button {
+  background: coral;
+  padding: 0.8em;
+  color: purple;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+.close {
+  color: purple;
+  float: right;
+  font-size: 3.7vw;
+}
+
+.close:hover,
+.close:focus {
+  cursor: pointer;
+  color: coral;
+  text-decoration: none;
+}
+
+h3.message {
+  font-size: 3vw;
+  letter-spacing: 0.4vw;
+  margin-bottom: 0;
+}
+
+p.message {
+  font-size: 3vw;
+}
+
+p.star-m,
+p.time-m {
+  font-size: 2vw;
+}
+
+.star-m span li {
+  display: inline-block;
+  color: gold;
+  text-shadow: 0.1vw 0.5vw coral;
 }
