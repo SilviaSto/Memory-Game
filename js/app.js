@@ -22,7 +22,7 @@ function newDeck() {
     closeModal();
     starRateReset();
     countReset();
-    resetTimer()
+    resetTimer();
   }
 }
 
@@ -42,7 +42,7 @@ function openCards(e) {
   countMoves();
   if (counter === 0) {
     time = setInterval(function() {
-      playTime()
+      playTime();
     }, 1000);
   }
 }
@@ -142,7 +142,7 @@ function matchedCards() {
 function unmatchedCards() {
   listOfOpen[0].classList.remove('open', 'show');
   listOfOpen[1].classList.remove('open', 'show');
-  listOfOpen = [] //no match -> empty array
+  listOfOpen = []; //no match -> empty array
 }
 
 function compare() {
@@ -212,7 +212,7 @@ restart.addEventListener('click', newDeck);
 
 
 window.onload = newDeck();
-playGame()
+playGame();
 playAgain();
 closeBtn.addEventListener('click', closeModal);
 
