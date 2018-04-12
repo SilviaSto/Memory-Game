@@ -3,6 +3,7 @@ const deck = document.querySelector('.deck');
 let card = deck.querySelectorAll('li.card');
 let cardList = [...card];
 
+
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
@@ -17,36 +18,33 @@ function newDeck() {
     cardList.forEach(function() {
       deck.appendChild(card);
     });
+    card.classList.remove('open', 'show', 'match');
+    closeModal();
     starRateReset();
     countReset();
-    card.classList.remove('open', 'show', 'match');
+    resetTimer()
   }
 }
 
+
 /*** Play ***/
-function Play() {
+function playGame() {
   for (card of cardList) {
     card.addEventListener('click', openCards);
   }
 }
 
-let listOfOpen = []; //temporary collector of open cards
-
 function openCards(e) {
   e.target.classList.add('open', 'show');
   listOfOpen.push(e.target);
-  if (listOfOpen.length % 2 === 0) { //starts counting of clicked pairs of cards
-    countMoves();
-  }
-  if (listOfOpen.length === 2) {
-    compare();
-  }
-  if (matchCollector.length === 8) {
-    setTimeout(function() {
-      console.log('winner');
-    }, 800);
-  }
+  compare();
   starRate();
+  countMoves();
+  if (counter === 0) {
+    time = setInterval(function() {
+      playTime()
+    }, 1000);
+  }
 }
 
 
@@ -71,8 +69,10 @@ const moves = document.querySelector('.moves');
 let counter = 0;
 
 function countMoves() {
-  counter++;
-  moves.innerHTML = counter;
+  if (listOfOpen.length % 2 === 0) { //starts counting of clicked pairs of cards
+    counter++;
+    moves.innerHTML = counter;
+  }
 }
 
 function countReset() {
@@ -80,42 +80,88 @@ function countReset() {
   counter = 0;
 }
 
+/*** Timer ***/
+let timer = document.querySelector('.timer');
+let minutes = 0;
+let seconds = 0;
+let time;
+
+
+function playTime() {
+  seconds++;
+  if ((seconds < 10) && (minutes < 10)) {
+    timer.innerHTML = `0${minutes} : 0${seconds}`;
+  } else if ((seconds >= 10) && (minutes < 10)) {
+    timer.innerHTML = `0${minutes} : ${seconds}`;
+  } else {
+    timer.innerHTML = `${minutes} : ${seconds}`;
+  }
+  if (seconds >= 59) {
+    minutes++;
+    seconds = 0;
+  }
+  if (minutes > 29) {
+    stopTimer();
+  }
+}
+
+function stopTimer() {
+  clearInterval(time);
+}
+
+function resetTimer() {
+  stopTimer();
+  timer.innerHTML = '00:00';
+  seconds = 0;
+  minutes = 0;
+}
+
 
 /*** Compare pairs of cards ***/
-let matchCollector = []; //collect matching pairs of cards, needed at the end of the game
-let match = deck.querySelectorAll('.match');
+let listOfOpen = []; //temporary collector of open cards
+let matchCollector = []; //temporary collector of matching pairs of cards
 
 function matchedCards() {
+  listOfOpen[0].classList.remove('open', 'show');
   listOfOpen[0].classList.toggle('match');
+  matchCollector.push(listOfOpen[0]); //collect matched pairs
+  listOfOpen[1].classList.remove('open', 'show');
   listOfOpen[1].classList.toggle('match');
+  matchCollector.push(listOfOpen[1]);
+  listOfOpen = []; //match ->empty array
+  if (matchCollector.length === 16) {
+    stopTimer();
+    setTimeout(function() {
+      displayMessage();
+      matchCollector = []; //empty the array after displaing message
+    }, 600);
+  }
 }
 
 
 function unmatchedCards() {
   listOfOpen[0].classList.remove('open', 'show');
-  listOfOpen[1].classList.remove('open', 'show')
+  listOfOpen[1].classList.remove('open', 'show');
+  listOfOpen = [] //no match -> empty array
 }
-
 
 function compare() {
-  if ((listOfOpen[1].className === 'show') || (listOfOpen[0].innerHTML !== listOfOpen[1].innerHTML)) {
-    setTimeout(function() {
-      unmatchedCards();
-      listOfOpen = []
-    }, 300); //no match -> empty array
-  } else if ((listOfOpen[1].className === 'show') || (listOfOpen[0].innerHTML === listOfOpen[1].innerHTML)) {
-    matchedCards();
-    listOfOpen = []; //match ->empty array
-    matchCollector.push(this); //collect matched pairs
+  if (listOfOpen.length === 2) {
+    if (listOfOpen[0].innerHTML !== listOfOpen[1].innerHTML) {
+      setTimeout(unmatchedCards, 400);
+    } else if (listOfOpen[0].innerHTML === listOfOpen[1].innerHTML) {
+      matchedCards();
+    }
   }
 }
+
 
 /*** Stars ***/
 let stars = document.querySelectorAll('.stars li');
 let starCounter = [...stars];
 
 function starRate() {
-  if (counter === 12) {
+  if (counter === 15) {
     starCounter[0].classList.add('hide');
   } else if (counter === 24) {
     starCounter[1].classList.add('hide');
@@ -130,15 +176,45 @@ function starRateReset() {
   }
 }
 
+/*** Modal Box ***/
+const modal = document.querySelector('#modal');
+const closeBtn = document.querySelector('.close');
+let starWon = document.querySelector('.star-m span');
+let t = document.querySelector('.time-m span');
+let finalStars = document.querySelector('.stars');
+
+function displayMessage() {
+  modal.style.display = 'block';
+  addStarsAndTime();
+}
+
+function closeModal() {
+  modal.style.display = 'none';
+}
+
+function addStarsAndTime() {
+  starWon.innerHTML = finalStars.innerHTML;
+  t.innerHTML = timer.innerHTML;
+}
+
+
+/*** Play Again button ***/
+const btnRestart = document.querySelector('.button');
+
+function playAgain() {
+  btnRestart.addEventListener('click', newDeck);
+}
 
 
 /*** Restart ***/
 const restart = document.querySelector('.restart');
 restart.addEventListener('click', newDeck);
 
-window.onload = newDeck();
-Play()
 
+window.onload = newDeck();
+playGame()
+playAgain();
+closeBtn.addEventListener('click', closeModal);
 
 
 /*
