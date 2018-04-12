@@ -96,7 +96,7 @@ function playTime() {
   } else {
     timer.innerHTML = `${minutes} : ${seconds}`;
   }
-  if (seconds >= 59) {
+  if (seconds > 59) {
     minutes++;
     seconds = 0;
   }
