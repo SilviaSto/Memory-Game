@@ -42,6 +42,7 @@ h1 {
   font-size: 5.2vw;
   text-shadow: 0.2vw 0.2vw #aa7ecd;
   letter-spacing: 0.4vw;
+  margin-bottom: 0;
 }
 
 /*
@@ -102,7 +103,7 @@ h1 {
 .score-panel {
   text-align: left;
   width: 70%;
-  margin-bottom: 10px;
+  margin-bottom: 0;
   font-size: 3vw;
   color: coral;
   float: left;
@@ -129,10 +130,20 @@ h1 {
   display: none;
 }
 
-.score-panel .restart {
+.restart {
   float: right;
   cursor: pointer;
   color: coral;
+}
+
+.timer {
+  margin-top: 10px;
+  padding-bottom: 0;
+  font-size: 4vw;
+}
+
+.moves {
+  font-size: 4vw;
 }
 
 /*-- add modal box --*/
@@ -189,16 +200,56 @@ h3.message {
 }
 
 p.message {
-  font-size: 3vw;
+  font-size: 4vw;
 }
 
 p.star-m,
 p.time-m {
-  font-size: 2vw;
+  font-size: 3vw;
 }
 
 .star-m span li {
   display: inline-block;
   color: gold;
   text-shadow: 0.1vw 0.5vw coral;
+}
+
+/***Responsive***/
+
+@media screen and (max-width: 375px) {
+  .deck {
+    width: 90%;
+    min-height: 300px;
+    padding: 3%;
+  }
+  .deck .card {
+    height: 65px;
+    width: 65px;
+  }
+  .deck .card.show,
+  .deck .card.match {
+    font-size: 25px;
+  }
+}
+
+@media screen and (min-width: 378px) and (max-width: 660px) {
+  .deck {
+    width: 90%;
+    min-height: 450px;
+    padding: 3%;
+  }
+  .deck .card {
+    height: 85px;
+    width: 85px;
+  }
+  .deck .card.show,
+  .deck .card.match {
+    font-size: 30px;
+  }
+}
+
+@media screen and (min-width: 200px) and (max-width: 800px) {
+  #modal {
+    left: auto;
+  }
 }
