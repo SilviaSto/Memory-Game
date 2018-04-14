@@ -81,11 +81,13 @@ h1 {
   transform: rotateY(180deg);
   background: #02b3e4;
   cursor: default;
+  pointer-events: none;
+  /*remove pointer and disable double click on open card*/
 }
 
 .deck .card.show {
   font-size: 33px;
-  transition: 0.3s;
+  transition: 0.4s;
 }
 
 .deck .card.match {
