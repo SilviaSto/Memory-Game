@@ -26,28 +26,6 @@ function newDeck() {
   }
 }
 
-
-/*** Play ***/
-function playGame() {
-  for (card of cardList) {
-    card.addEventListener('click', openCards);
-  }
-}
-
-function openCards(e) {
-  e.target.classList.add('open', 'show');
-  listOfOpen.push(e.target);
-  compare();
-  starRate();
-  countMoves();
-  if (counter === 0) {
-    time = setInterval(function() {
-      playTime();
-    }, 1000);
-  }
-}
-
-
 /*** Shuffle function from http://stackoverflow.com/a/2450976 ***/
 function shuffle(array) {
   var currentIndex = array.length,
@@ -62,6 +40,70 @@ function shuffle(array) {
   }
   return array;
 }
+
+
+/*** Play ***/
+function openCards() {
+  for (card of cardList) {
+    card.addEventListener('click', playGame);
+  }
+}
+
+
+function playGame(e) {
+  e.target.classList.add('open', 'show');
+  listOfOpen.push(this);
+  compare();
+  starRate();
+  countMoves();
+  if (counter === 0) {
+    time = setInterval(playTime, 1000);
+  }
+}
+
+/*** Compare pairs of cards ***/
+let listOfOpen = []; //temporary collector of open cards
+let matchCollector = []; //temporary collector of matching pairs of cards
+
+function compare() {
+  if (listOfOpen.length === 2) {
+    if (listOfOpen[0].innerHTML !== listOfOpen[1].innerHTML) {
+      for (card of cardList) {
+        card.removeEventListener('click', playGame);
+      }
+      setTimeout(mismatchedCards, 400);
+      setTimeout(openCards, 550);
+    } else if (listOfOpen[0].innerHTML === listOfOpen[1].innerHTML) {
+      matchedCards();
+    }
+  }
+}
+
+
+function matchedCards() {
+  listOfOpen[0].classList.remove('open', 'show');
+  listOfOpen[0].classList.toggle('match');
+  matchCollector.push(listOfOpen[0]); //collect matched pairs
+  listOfOpen[1].classList.remove('open', 'show');
+  listOfOpen[1].classList.toggle('match');
+  matchCollector.push(listOfOpen[1]);
+  listOfOpen = []; //match ->empty array
+  if (matchCollector.length === 16) {
+    stopTimer();
+    setTimeout(function() {
+      displayMessage();
+      matchCollector = []; //empty the array after displaing message
+    }, 600);
+  }
+}
+
+
+function mismatchedCards() {
+  listOfOpen[0].classList.remove('open', 'show');
+  listOfOpen[1].classList.remove('open', 'show');
+  listOfOpen = []; //no match -> empty array
+}
+
 
 
 /*** Moves counter ***/
@@ -114,45 +156,6 @@ function resetTimer() {
   timer.innerHTML = '00:00';
   seconds = 0;
   minutes = 0;
-}
-
-
-/*** Compare pairs of cards ***/
-let listOfOpen = []; //temporary collector of open cards
-let matchCollector = []; //temporary collector of matching pairs of cards
-
-function matchedCards() {
-  listOfOpen[0].classList.remove('open', 'show');
-  listOfOpen[0].classList.toggle('match');
-  matchCollector.push(listOfOpen[0]); //collect matched pairs
-  listOfOpen[1].classList.remove('open', 'show');
-  listOfOpen[1].classList.toggle('match');
-  matchCollector.push(listOfOpen[1]);
-  listOfOpen = []; //match ->empty array
-  if (matchCollector.length === 16) {
-    stopTimer();
-    setTimeout(function() {
-      displayMessage();
-      matchCollector = []; //empty the array after displaing message
-    }, 600);
-  }
-}
-
-
-function unmatchedCards() {
-  listOfOpen[0].classList.remove('open', 'show');
-  listOfOpen[1].classList.remove('open', 'show');
-  listOfOpen = []; //no match -> empty array
-}
-
-function compare() {
-  if (listOfOpen.length === 2) {
-    if (listOfOpen[0].innerHTML !== listOfOpen[1].innerHTML) {
-      setTimeout(unmatchedCards, 400);
-    } else if (listOfOpen[0].innerHTML === listOfOpen[1].innerHTML) {
-      matchedCards();
-    }
-  }
 }
 
 
@@ -212,7 +215,7 @@ restart.addEventListener('click', newDeck);
 
 
 window.onload = newDeck();
-playGame();
+openCards();
 playAgain();
 closeBtn.addEventListener('click', closeModal);
 
