@@ -12,6 +12,8 @@ After 15 moves - 2 stars;
 40+ - 0 stars.
 Once all cards have been correctly matched the game ends. A pop up message congratulates the player and shows the winner time and won stars.
 
+ https://silviasto.github.io/Memory-Game/
+
 
 # Used resources:
 www.udacity.com and www.w3schools.com, also all helpful comments from my great student fellows in Slack channels, and tutorials from youtube.com (Create a Modal With HTML, CSS & JavaScript by Traversy Media).
